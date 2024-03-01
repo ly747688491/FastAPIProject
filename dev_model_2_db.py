@@ -1,8 +1,7 @@
-from apps.model.base import Base
 from sqlalchemy import create_engine
 
-from app.config.db import db_config
-from app.model import *
+from apps.config.database import db_config
+from apps.models.base import Base
 
 # 根据Mode创建DB数据表
 

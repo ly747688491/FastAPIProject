@@ -1,8 +1,9 @@
 import os
 
-from apps.utils.sync_model import SyncModel
 
-from apps.config.db import db_config
+
+from apps.config.database import db_config
+from apps.utils.system_utils.sync_model import SyncModel
 
 # 同步Model：根据数据库中的表结构。
 

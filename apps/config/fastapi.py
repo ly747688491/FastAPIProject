@@ -1,9 +1,9 @@
 # 配置文件：DbConfig
 class FastapiConfig:
     debug = True
-    title = 'FastAPI Admin'
-    description = '基于FastAPI的Admin模板工程'
-    version = '0.0.1.20201127'
+    title = '邹丽莎毕设项目'
+    description = '基于FastAPI毕设项目'
+    version = '0.0.1'
     openapi_url = '/openapi.json'
     openapi_prefix = ''
     docs_url = '/docs'

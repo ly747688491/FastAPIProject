@@ -77,12 +77,14 @@ class DbUtils(object):
 
     # 根据文件获取SQL文件
     @staticmethod
-    def get_sql_by_file(file_path, params={}):
+    def get_sql_by_file(file_path, params=None):
+        if params is None:
+            params = {}
         sql = DbUtils._get_file(file_path)
         return sql.format(**params)
 
     # 获取SQL文件
     @staticmethod
     def _get_file(file_path):
-        with open('app/sql/' + file_path, 'r', encoding='utf-8') as f:
+        with open(f'app/sql/{file_path}', 'r', encoding='utf-8') as f:
             return f.read()

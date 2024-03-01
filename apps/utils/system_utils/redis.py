@@ -11,7 +11,6 @@ class RedisConfig(object):
     :version: 1.2
     :date: 2020-02-11
     """
-
     host = 'redis'
     port = '6379'
     username = 'root'
@@ -69,20 +68,13 @@ class RedisUtils:
         return self._conn.set(key, value, ex)
 
     def get_string(self, key):
-        value = self._conn.get(key)
-
-        if value:
-            return str(value, 'utf-8')
-        else:
-            return None
+        return str(value, 'utf-8') if (value := self._conn.get(key)) else None
 
     def set(self, key, value, ex=None):
         return self._conn.set(key, json.dumps(value, ensure_ascii=False, cls=CustomJSONEncoder), ex)
 
     def get(self, key):
-        value = self._conn.get(key)
-
-        if value:
+        if value := self._conn.get(key):
             return json.loads(str(value, 'utf-8'))
         else:
             return None

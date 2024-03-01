@@ -1,5 +1,5 @@
 from apps.dao.event import EventDao
-from apps.schema.base import ListArgsSchema, RespListSchema, RespIdSchema, RespBaseSchema
+from apps.schemas.base import ListArgsSchema, RespListSchema, RespIdSchema, RespBaseSchema
 
 
 class BaseService(object):

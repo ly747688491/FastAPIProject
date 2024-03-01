@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
-from app.schema.base import ListArgsSchema, RespBaseSchema, RespIdSchema, RespListSchema
-from app.utils.auth import get_auth_data
-from app.utils.custom_route import CustomRoute
 
-from ..schema.demo import DemoInfoSchema, DemoRespDetailSchema
+from ..schemas.base import RespListSchema, ListArgsSchema, RespIdSchema, RespBaseSchema
+from ..schemas.demo import DemoRespDetailSchema, DemoInfoSchema
 from ..service.demo import DemoService
+from ..utils.system_utils.auth import get_auth_data
+from ..utils.system_utils.custom_route import CustomRoute
 
 router = APIRouter(route_class=CustomRoute)
 

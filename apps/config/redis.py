@@ -1,8 +1,8 @@
-from apps.utils.redis import RedisConfig
+from apps.utils.system_utils.redis import RedisConfig
+from config import configs
 
 redis_config = RedisConfig()
-redis_config.host = '127.0.0.1'
-redis_config.port = '6379'
-redis_config.username = 'root'
-redis_config.password = '123456'
-redis_config.database = 1
+redis_config.host = configs.REDIS_HOST
+redis_config.port = configs.REDIS_PORT
+redis_config.password = configs.REDIS_PASSWORD
+redis_config.database = configs.REDIS_DB

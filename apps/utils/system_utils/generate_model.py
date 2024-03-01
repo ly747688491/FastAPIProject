@@ -21,8 +21,8 @@ class GenerateModel(object):
         # 生成文件
         self._generate_file('controller')
         self._generate_file('dao')
-        self._generate_file('model')
-        self._generate_file('schema')
+        self._generate_file('models')
+        self._generate_file('schemas')
         self._generate_file('service')
 
     @staticmethod
@@ -70,13 +70,13 @@ class GenerateModel(object):
         :param dir_name:
         :return:
         """
-
-        src_file_path = self.lib_path + os.sep + dir_name + os.sep + 'demo.py'
+        src_file_path = self.app_path + os.sep + dir_name + os.sep + 'demo.py'
         new_file_path = self.app_path + os.sep + dir_name + os.sep + self.model_name + '.py'
 
         file_content = self._read_file_content(src_file_path)
 
         file_content = file_content.replace('demo', self.model_name)
         file_content = file_content.replace('Demo', self.model_name_pascal)
+        print(new_file_path)
 
         self._save_file_content(new_file_path, file_content)

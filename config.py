@@ -7,13 +7,12 @@ from io import StringIO
 from typing import Optional
 
 from dotenv.main import DotEnv
-from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic import Field, BaseSettings
 
 logger = logging.getLogger(__name__)
 
 
-def my_get_stream(self):
+def custom_get_stream(self):
     """重写python-dotenv读取文件的方法，使用utf-8，支持读取包含中文的.env配置文件"""
     if isinstance(self.dotenv_path, StringIO):
         yield self.dotenv_path
@@ -26,7 +25,7 @@ def my_get_stream(self):
         yield StringIO('')
 
 
-DotEnv._get_stream = contextmanager(my_get_stream)
+DotEnv._get_stream = contextmanager(custom_get_stream)
 
 
 class Settings(BaseSettings):
@@ -47,11 +46,6 @@ class Settings(BaseSettings):
     # 算法
     ALGORITHM = "HS256"
 
-    # 产品名称
-    CDN_PRODUCTION_NAME = {
-        "cdn": "cdn"
-    }
-
     # 加载.env文件的配置
     class Config:
         env_file = ".env"
@@ -68,70 +62,12 @@ class DevConfig(Settings):
     REDIS_PASSWORD: Optional[str] = Field(None, env="DEV_REDIS_PASSWORD")
     REDIS_DB: Optional[int] = Field(None, env="DEV_REDIS_DB")
 
-    # 七牛玉
-    QINIU_ACCESS_KEY: Optional[str] = Field(None, env="DEV_QINIU_ACCESS_KEY")
-    QINIU_SECRET_KEY: Optional[str] = Field(None, env="DEV_QINIU_SECRET_KEY")
-    QINIU_BUCKET_NAME: Optional[str] = Field(None, env="DEV_QINIU_BUCKET_NAME")
-    QINIU_DOMAIN_NAME: Optional[str] = Field(None, env="DEV_QINIU_DOMAIN_NAME")
-
-    # Tencent
-    TENCENT_SECRET_KEY: Optional[str] = Field(None, env="DEV_TENCENT_SECRET_KEY")
-    TENCENT_ACCESS_ID: Optional[str] = Field(None, env="DEV_TENCENT_ACCESS_ID")
-
     # Mysql
     MYSQL_SERVER: Optional[str] = Field(None, env="DEV_MYSQL_SERVER")
     MYSQL_USER: Optional[str] = Field(None, env="DEV_MYSQL_USER")
     MYSQL_PASSWORD: Optional[str] = Field(None, env="DEV_MYSQL_PASSWORD")
     MYSQL_DB_NAME: Optional[str] = Field(None, env="DEV_MYSQL_DB_NAME")
     MYSQL_PORT: Optional[int] = Field(None, env="DEV_MYSQL_PORT")
-
-
-class TestConfig(Settings):
-    """Production configurations."""
-
-    REDIS_HOST: Optional[str] = Field(None, env="TEST_REDIS_HOST")
-    REDIS_PORT: Optional[int] = Field(None, env="TEST_REDIS_PORT")
-    REDIS_USERNAME: Optional[str] = Field(None, env="TEST_REDIS_USERNAME")
-    REDIS_PASSWORD: Optional[str] = Field(None, env="TEST_REDIS_PASSWORD")
-    REDIS_DB: Optional[int] = Field(None, env="TEST_REDIS_DB")
-
-    QINIU_ACCESS_KEY: Optional[str] = Field(None, env="TEST_QINIU_ACCESS_KEY")
-    QINIU_SECRET_KEY: Optional[str] = Field(None, env="TEST_QINIU_SECRET_KEY")
-    QINIU_BUCKET_NAME: Optional[str] = Field(None, env="TEST_QINIU_BUCKET_NAME")
-    QINIU_DOMAIN_NAME: Optional[str] = Field(None, env="TEST_QINIU_DOMAIN_NAME")
-
-    TENCENT_SECRET_KEY: Optional[str] = Field(None, env="TEST_TENCENT_SECRET_KEY")
-    TENCENT_ACCESS_ID: Optional[str] = Field(None, env="TEST_TENCENT_ACCESS_ID")
-
-    MYSQL_SERVER: Optional[str] = Field(None, env="TEST_MYSQL_SERVER")
-    MYSQL_USER: Optional[str] = Field(None, env="TEST_MYSQL_USER")
-    MYSQL_PASSWORD: Optional[str] = Field(None, env="TEST_MYSQL_PASSWORD")
-    MYSQL_DB_NAME: Optional[str] = Field(None, env="TEST_MYSQL_DB_NAME")
-    MYSQL_PORT: Optional[int] = Field(None, env="TEST_MYSQL_PORT")
-
-
-class ProdConfig(Settings):
-    """Production configurations."""
-
-    REDIS_HOST: Optional[str] = Field(None, env="PROD_REDIS_HOST")
-    REDIS_PORT: Optional[int] = Field(None, env="PROD_REDIS_PORT")
-    REDIS_USERNAME: Optional[str] = Field(None, env="PROD_REDIS_USERNAME")
-    REDIS_PASSWORD: Optional[str] = Field(None, env="PROD_REDIS_PASSWORD")
-    REDIS_DB: Optional[int] = Field(None, env="PROD_REDIS_DB")
-
-    QINIU_ACCESS_KEY: Optional[str] = Field(None, env="PROD_QINIU_ACCESS_KEY")
-    QINIU_SECRET_KEY: Optional[str] = Field(None, env="PROD_QINIU_SECRET_KEY")
-    QINIU_BUCKET_NAME: Optional[str] = Field(None, env="PROD_QINIU_BUCKET_NAME")
-    QINIU_DOMAIN_NAME: Optional[str] = Field(None, env="PROD_QINIU_DOMAIN_NAME")
-
-    TENCENT_SECRET_KEY: Optional[str] = Field(None, env="PROD_TENCENT_SECRET_KEY")
-    TENCENT_ACCESS_ID: Optional[str] = Field(None, env="PROD_TENCENT_ACCESS_ID")
-
-    MYSQL_SERVER: Optional[str] = Field(None, env="PROD_MYSQL_SERVER")
-    MYSQL_USER: Optional[str] = Field(None, env="PROD_MYSQL_USER")
-    MYSQL_PASSWORD: Optional[str] = Field(None, env="PROD_MYSQL_PASSWORD")
-    MYSQL_DB_NAME: Optional[str] = Field(None, env="PROD_MYSQL_DB_NAME")
-    MYSQL_PORT: Optional[int] = Field(None, env="PROD_MYSQL_PORT")
 
 
 class FactoryConfig:
@@ -144,12 +80,6 @@ class FactoryConfig:
 
         if self.env_state == "development":
             return DevConfig()
-
-        elif self.env_state == "production":
-            return ProdConfig()
-
-        elif self.env_state == "testing":
-            return TestConfig()
 
 
 @lru_cache()

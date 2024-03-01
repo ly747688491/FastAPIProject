@@ -2,26 +2,22 @@ import json
 
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
-from apps.controller.base import base_router
-from apps.utils.auth import get_auth_data_by_authorization
-from apps.utils.db import DbUtils
-from apps.utils.mongo import MongoUtils
-from apps.utils.redis import RedisUtils
-from apps.utils.request_log import create_log, update_log
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.staticfiles import StaticFiles
 
 from apps.config.anonymous import anonymous_path_list
-from apps.config.db import db_config
+from apps.config.database import db_init
+
 from apps.config.fastapi import FastapiConfig
-from apps.config.mongo import mongo_config
 from apps.config.redis import redis_config
 from apps.controller.api_v1 import api_v1_router
+from apps.controller.base import base_router
+from apps.utils.system_utils.auth import get_auth_data_by_authorization
+from apps.utils.system_utils.redis import RedisUtils
+from apps.utils.system_utils.request_log import update_log, create_log
 
-DbUtils.default_config = db_config
-MongoUtils.default_config = mongo_config
 RedisUtils.default_config = redis_config
 
 app = FastAPI(**FastapiConfig.__dict__)
@@ -68,12 +64,11 @@ async def auth_token(req: Request, call_next):
     if path in anonymous_path_list or path.find('GET/res/') == 0:
         response_type = 2
         response = await call_next(req)
-    else:
-        auth_data = get_auth_data_by_authorization(req.headers.get('authorization'), 360000)
-
-        if auth_data:
-            response_type = 3
-            response = await call_next(req)
+    elif auth_data := get_auth_data_by_authorization(
+        req.headers.get('authorization'), 360000
+    ):
+        response_type = 3
+        response = await call_next(req)
 
     if response_type == 1:
         log = await create_log(req)
@@ -93,3 +88,5 @@ app.add_middleware(
 app.include_router(base_router)
 app.include_router(api_v1_router, prefix='/v1')
 app.mount('/res', StaticFiles(directory=FastapiConfig.res_path), name='res')
+
+db_init(app)

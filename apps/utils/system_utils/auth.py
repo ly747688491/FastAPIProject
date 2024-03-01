@@ -16,14 +16,10 @@ def get_auth_data_by_authorization(authorization: str, ex: int = None):
     """
     获取登录用户认证数据
     :param authorization:
-    :param prefix: 前缀
     :param ex: 数据过期秒数
     :return:
     """
-    if authorization:
-        return get_auth_data_by_token(authorization, ex)
-
-    return None
+    return get_auth_data_by_token(authorization, ex) if authorization else None
 
 
 def get_auth_data_by_token(token: str, ex: int = None):
@@ -34,10 +30,10 @@ def get_auth_data_by_token(token: str, ex: int = None):
     :return: 登录认证数据
     """
 
-    auth_data = RedisUtils().get('token:' + token)
+    auth_data = RedisUtils().get(f'token:{token}')
 
     if ex and auth_data:
-        RedisUtils().expire('token:' + token, ex)
+        RedisUtils().expire(f'token:{token}', ex)
 
     return auth_data
 

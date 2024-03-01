@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from app.utils.custom_route import CustomRoute
 
-from ..schema.auth import AuthDataSchema, LoginInputSchema
+from ..schemas.auth import AuthDataSchema, LoginInputSchema
 from ..service.user import UserService
+from ..utils.system_utils.custom_route import CustomRoute
 
 router = APIRouter(route_class=CustomRoute)
 
