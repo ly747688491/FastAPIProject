@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     DB_DATABASE: str = 'test_temp'
     DB_CHARSET: str = 'utf8mb4'
     DB_URL = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}?charset=utf8mb4"
-    DB_MODELS = ["models.oper_log"]
+    DB_MODELS = ["models.oper_log", "models.job_info"]
 
     # Redis
     REDIS_HOST: str = '127.0.0.1'

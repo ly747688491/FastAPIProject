@@ -8,8 +8,8 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse, Response
 
 from config.setting import settings
-from register import register_redis, register_orm, register_cors, register_router, \
-    register_exception, register_mount, logger_init, register_casbin
+from register import register_redis, register_orm, register_router, \
+    register_exception, register_mount, logger_init
 from service.oper_log import OperLogService
 
 
@@ -39,6 +39,7 @@ async def logger_request(self, request: Request, call_next) -> Response:
         f"{response.status_code} {request.client.host} {request.method} {request.url} {end_time - start_time}s")
     return await OperLogService(request, response).log_oper()
 
+
 app.add_middleware(
     CORSMiddleware,
     # allow_origins=[str(origin) for origin in settings.CORS_ORIGINS], # 允许访问的源
@@ -47,6 +48,7 @@ app.add_middleware(
     allow_methods=("GET", "POST", "PUT", "DELETE"),  # 允许使用的请求方法
     allow_headers=("*", "authentication"),  # 允许携带的 Headers
 )
+
 
 async def create_app():
     """ 注册中心 """

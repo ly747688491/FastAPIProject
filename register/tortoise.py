@@ -31,3 +31,15 @@ async def init_orm(config: Optional[dict] = None,
 async def close_orm() -> None:  # pylint: disable=W0612
     await connections.close_all()
     logger.info("Tortoise-ORM shutdown")
+
+
+TORTOISE_ORM = {
+    "connections": {"default": settings.DB_URL},
+    "apps": {
+        "models": {
+            "models": ["aerich.models"] + settings.DB_MODELS,
+            # 须添加“aerich.models” 后者“models”是上述models.py文件的路径
+            "default_connection": "default",
+        },
+    },
+}
