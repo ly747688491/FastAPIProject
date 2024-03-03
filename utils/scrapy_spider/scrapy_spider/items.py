@@ -6,12 +6,6 @@
 import scrapy
 
 
-class ScrapySpiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
-
 class JobInfoSpiderItem(scrapy.Item):
     job_name = scrapy.Field()
     job_education = scrapy.Field()
@@ -22,6 +16,7 @@ class JobInfoSpiderItem(scrapy.Item):
     company_size = scrapy.Field()
     company_type = scrapy.Field()
     job_tags = scrapy.Field()
+    province = scrapy.Field()
 
 
 

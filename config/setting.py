@@ -38,9 +38,6 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 3  # token过期时间: 60 m * 3 hour
     ALGORITHM: str = "HS512"  # 生成token的加密算法
 
-    ADMIN_USERNAME = "admin"
-    ADMIN_PASSWORD = "admin123"
-
     # loguru
     LOGGER_DIR: str = "logs"  # 日志文件夹名
     LOGGER_NAME: str = '{time:YYYY-MM-DD_HH-mm-ss}.log'  # 日志文件名 (时间格式)
@@ -52,9 +49,9 @@ class Settings(BaseSettings):
     DB_ECHO: bool = False  # 是否打印数据库日志 (可看到创建表、表数据增删改查的信息)
     DB_HOST: str = '127.0.0.1'
     DB_PORT: int = 3306
-    DB_USER: str = 'caiqian'
-    DB_PASSWORD: str = 'Liy_0123'
-    DB_DATABASE: str = 'test_temp'
+    DB_USER: str = 'zlsanalysis'
+    DB_PASSWORD: str = 'zlsanalysis'
+    DB_DATABASE: str = 'zlsanalysis'
     DB_CHARSET: str = 'utf8mb4'
     DB_URL = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}?charset=utf8mb4"
     DB_MODELS = ["models.oper_log", "models.job_info"]

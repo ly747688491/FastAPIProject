@@ -64,8 +64,8 @@ urllib3
 websockets
 scrapy
 itemadapter
-pymongo
 aioredis
 loguru
 orjson
 casbin
+casbin_tortoise_adapter

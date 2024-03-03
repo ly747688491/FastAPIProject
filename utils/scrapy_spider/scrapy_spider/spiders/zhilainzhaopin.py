@@ -5,8 +5,8 @@ from scrapy import Request
 from scrapy.http import Response
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
-from config.base_data import HEADERS, COOKIE
-from config.xpath import next_xpath, job_href, next_button, job_name, job_salary, job_experience
+from utils.scrapy_spider.scrapy_spider.items import JobInfoSpiderItem
+from utils.scrapy_spider.setting import HEADERS, COOKIE
 
 
 def header_row_to_dict(raw_headers):
@@ -62,12 +62,14 @@ class ZhilainzhaopinSpider(scrapy.Spider):
                 callback=self.parse_page,
                 cookies=self.cookies,
                 headers=self.headers,
+                meta={'province': city_name}
             )
 
     def parse_page(self, response: Response, **kwargs: Any) -> Any:
+        city_name = response.meta.get('province', '未知城市')
         url = response.request.url
         next_page = parsing_urls(url)
-        item = {}
+        item = JobInfoSpiderItem()
         list_body = response.xpath("//div[@class='joblist-box__item clearfix']")
         for body in list_body:
             item['job_name'] = body.xpath(".//div[@class='jobinfo']/div/span/text()").extract_first().strip()
@@ -83,6 +85,7 @@ class ZhilainzhaopinSpider(scrapy.Spider):
                 "//div[@class='companyinfo__top']/div[@class='companyinfo__name']/text()").extract_first().strip()
             item['company_type'] = body.xpath(".//div[@class='companyinfo__tag']/div[1]/text()").extract_first().strip()
             item['company_size'] = body.xpath("//div[@class='companyinfo__tag']/div[2]/text()").extract_first().strip()
+            item['province'] = city_name
 
             yield item
 

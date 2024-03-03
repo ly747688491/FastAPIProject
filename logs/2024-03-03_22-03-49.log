@@ -1,0 +1,7 @@
+2024-03-03 22:03:49.710 | DEBUG    | tortoise:init:570 - Tortoise-ORM startup
+    connections: {'default': {'engine': 'tortoise.backends.mysql', 'credentials': {'port': 3306, 'charset': 'utf8mb4', 'sql_mode': 'STRICT_TRANS_TABLES', 'database': 'zls***', 'host': '127.0.0.1', 'user': 'zls***', 'password': 'zls***'}}}
+    apps: {'models': {'models': ['models.oper_log', 'models.job_info'], 'default_connection': 'default'}}
+2024-03-03 22:03:49.808 | INFO     | register.tortoise:init_orm:25 - Tortoise-ORM 初始化成功, {'default': <tortoise.backends.mysql.client.MySQLClient object at 0x00000292AF3C8910>}, {'models': {'OperLogDb': <class 'models.oper_log.OperLogDb'>, 'JobInfoDb': <class 'models.job_info.JobInfoDb'>}}
+2024-03-03 22:03:49.809 | INFO     | register.redis:init_redis_pool:18 - 初始化redis成功
+2024-03-03 22:03:49.810 | INFO     | main:create_app:67 - startup over
+2024-03-03 22:09:10.413 | INFO     | main:lifespan:21 - shutdown
